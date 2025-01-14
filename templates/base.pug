@@ -1,0 +1,77 @@
+- load static compress
+!!! 5
+
+html(lang='de')
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport", content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui")
+    title
+      block title
+        | Give me a title
+    link(href="https://fonts.googleapis.com/css?family=Barrio", rel="stylesheet")
+    script(src="{% static 'js/vue.global.js' %}")
+    script(src="{% static 'js/vuetify.min.js' %}")
+    script(src="{% static 'js/axios.min.js' %}")
+    script(src="{% static 'js/moment.min.js' %}")
+
+    link(href='{% static "css/vuetify.min.css" %}', rel="stylesheet", type="text/css")
+    link(href='{% static "css/materialdesignicons.min.css" %}', rel="stylesheet", type="text/css")
+
+    -compress css
+      link(href='{% static "sass/styles.sass" %}', rel="stylesheet", type="text/x-sass")
+
+body
+  #app
+    v-app(dark v-cloak)
+      v-snackbar(v-model="snackbar" timeout="3000" :color="snackbarColor" location="top") [[ message ]]
+      header
+        block header
+      main
+        block content
+      footer
+        block footer
+
+  block all_scripts
+    script.
+      const {createApp} = Vue
+      const {createVuetify} = Vuetify
+
+      // customise the vuetify theme here
+      const vuetify = createVuetify({
+        theme: {
+          themes: {
+            light: {
+              dark: false,
+              colors: {
+                primary: "#3F51B5",
+                secondary: "#383D3F"
+              }
+            },
+          },
+        },
+      })
+
+      // if the current domain is from the staging system, add class caution to div.stage
+      if (window.location.hostname === 'stage.something.com') {
+        document.querySelector('.stage').classList.add('caution')
+      }
+
+    block vue
+      script.
+        const app = createApp({
+          delimiters: ['[[', ']]'],
+          data() {
+            return {
+            }
+          },
+          created() {
+          },
+          methods: {
+          }
+        })
+
+    script(type="module").
+      import BaseApp from '{% static "js/BaseApp.js" %}';
+      app.use(vuetify)
+      app.use(BaseApp)
+      app.mount('#app')
