@@ -7,6 +7,8 @@ block title
 block content
   .hello-world
     span(v-text='title')
+
+  p.einfach Hier soll einfach Text stehen, um den ersten richtigen Commit zu testen
   .joke(v-text="joke")
 
 
@@ -18,7 +20,6 @@ block footer
       .v-col-auto
         v-btn(:loading="isLoading" color="primary"
           @click="loadJoke()" href="#") get me another joke
-
 
 block vue
   script.
